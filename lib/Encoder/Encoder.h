@@ -9,6 +9,6 @@
 #define EC_SWPIN  0
 
 void EC11_GPIO_INIT(void);
-char EC11_Scan(char EC11_Type);
+signed char EC11_Scan(char EC11_Type);
 
 #endif /* __ENCODER_H */
