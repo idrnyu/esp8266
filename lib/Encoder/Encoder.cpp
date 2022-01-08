@@ -55,17 +55,25 @@ signed char EC11_Scan(unsigned char EC11_Type)
             ScanResult = 2;
     }
 
-    // 一定位一脉冲 && 比较上一次电平，编码器有动作（电平跳变沿触发）
+    // 一定位一脉冲 && CLK为低电平 && 需要等待一个CLK周期脉冲完成后才能继续进入
+    // CLK为低电平时  DT为低电平  反传
+    // CLK为低电平时  DT为高电平  正传
     if (EC11_Type == 0 && CLKPIN != EC_CLK_Last)
     {
+        is_turn = 1; // 编码器动作置位
+        EC_CLK_Last = CLKPIN;
+        if(CLKPIN == 0)
+        {
+            ScanResult = DTPIN ? (key_up ? 3 : 1) : (key_up ? -3 : -1);
+        }
     }
 
-    // 两定位一脉冲 && 比较上一次电平，编码器有动作（电平跳变沿触发）
+    // 两定位一脉冲 && 比较上一CLK次电平，编码器有动作（电平跳变沿触发）
     // CLK上升沿  DT为高电平  反转
     // CLK下降沿  DT为低电平  反转
     // CLK上升沿  DT为低电平  正传
     // CLK下降沿  DT为高电平  正传
-    else if (CLKPIN != EC_CLK_Last)
+    else if (EC11_Type == 1 && CLKPIN != EC_CLK_Last)
     {
         is_turn = 1; // 编码器动作置位
         EC_CLK_Last = CLKPIN;
