@@ -45,8 +45,12 @@ signed char EC11_Scan(unsigned char EC11_Type)
     // EC11按下
     if (!key_up && SWPIN == 0)
     {
-        key_up = 1;  // 有按键按下（标志位置位）
-        is_turn = 0; // 旋转动作清零
+        delay(50); // 加个消抖动作
+        if (digitalRead(EC_SWPIN) == 0)
+        {
+            key_up = 1;  // 有按键按下（标志位置位）
+            is_turn = 0; // 旋转动作清零
+        }
     }
     else if (key_up && SWPIN == 1)
     {
@@ -62,7 +66,7 @@ signed char EC11_Scan(unsigned char EC11_Type)
     {
         is_turn = 1; // 编码器动作置位
         EC_CLK_Last = CLKPIN;
-        if(CLKPIN == 0)
+        if (CLKPIN == 0)
         {
             ScanResult = DTPIN ? (key_up ? 3 : 1) : (key_up ? -3 : -1);
         }
