@@ -27,7 +27,7 @@ void EC11_GPIO_INIT()
 }
 
 /**
- * @brief EC11旋转编码器扫描
+ * @brief EC11旋转编码器扫描（扫描频率不能大于4ms）
  *
  * @param EC11_Type 0：一定位一脉冲；1：两定位一脉冲
  * @return unsigned char 结果码 0：无动作；1：正传；-1：反转；2：只按下按键；3：按着按键正传；-3：按着按键反转；
